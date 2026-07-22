@@ -17,14 +17,17 @@ export default function Dashboard() {
       ) : (
         <For each={playlistsStore.playlists}>
           {(p) => (
-            <div class="card bg-base-300 w-full shadow-sm rounded-md">
+            <A
+              href={`/playlists/${p.id}`}
+              class="card bg-base-300 w-full shadow-sm rounded-md hover:shadow-md transition-shadow"
+            >
               <div class="rounded-lg py-4" style={`background: ${p.color};`} />
 
               <div class="card-body">
                 <h3 class="card-title">{p.name}</h3>
                 <p>{p.description}</p>
               </div>
-            </div>
+            </A>
           )}
         </For>
       )}

@@ -3,7 +3,6 @@ import { A, type RouteSectionProps, useLocation } from "@solidjs/router";
 export default function Layout(props: RouteSectionProps) {
   const location = useLocation();
   const isDashboard = () => location.pathname === "/";
-  const isAddPage = () => location.pathname === "/add";
 
   return (
     <div>
@@ -23,7 +22,7 @@ export default function Layout(props: RouteSectionProps) {
         </div>
 
         <div class="navbar-end">
-          {!isAddPage() && (
+          {isDashboard() && (
             <A href="/add" class="btn btn-sm btn-dash">
               + Add
             </A>
