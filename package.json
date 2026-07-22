@@ -12,6 +12,7 @@
     "check": "bunx biome check --write"
   },
   "dependencies": {
+    "@solidjs/router": "^0.16.2",
     "@tailwindcss/vite": "^4.3.3",
     "solid-js": "^1.9.14",
     "tailwindcss": "^4.3.3"

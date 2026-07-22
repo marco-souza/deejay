@@ -1,4 +1,15 @@
+import { HashRouter, Route } from "@solidjs/router";
 import { render } from "solid-js/web";
-import Popup from "./pages/Popup";
+import Layout from "./components/Layout";
+import AddPlaylist from "./pages/AddPlaylist";
+import Dashboard from "./pages/Dashboard";
 
-render(() => <Popup />, document.body);
+render(
+  () => (
+    <HashRouter root={Layout}>
+      <Route path="/" component={Dashboard} />
+      <Route path="/add" component={AddPlaylist} />
+    </HashRouter>
+  ),
+  document.body,
+);
