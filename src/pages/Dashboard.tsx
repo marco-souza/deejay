@@ -18,7 +18,8 @@ export default function Dashboard() {
         <For each={playlistsStore.playlists}>
           {(p) => (
             <div class="card bg-base-300 w-full shadow-sm rounded-md">
-              <div class="cover py-4" style={`background: ${p.color};`}></div>
+              <div class="rounded-lg py-4" style={`background: ${p.color};`} />
+
               <div class="card-body">
                 <h3 class="card-title">{p.name}</h3>
                 <p>{p.description}</p>
