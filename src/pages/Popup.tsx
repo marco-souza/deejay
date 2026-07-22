@@ -1,5 +1,5 @@
-import { onMount, For } from "solid-js";
-import { playlistsStore, type Playlist } from "../stores/playlists";
+import { For, onMount } from "solid-js";
+import { type Playlist, playlistsStore } from "../stores/playlists";
 
 export default function Popup() {
   onMount(() => {
@@ -10,15 +10,19 @@ export default function Popup() {
     <div>
       <div class="navbar bg-base-100 shadow-sm">
         <div class="navbar-start">
-          <button class="btn btn-sm btn-dash">Back</button>
+          <button type="button" class="btn btn-sm btn-dash">
+            Back
+          </button>
         </div>
 
         <div class="navbar-center flex-1">
-          <a class="btn btn-ghost text-xl">DeeJay</a>
+          <span class="btn btn-ghost text-xl">DeeJay</span>
         </div>
 
         <div class="navbar-end">
-          <button class="btn btn-sm btn-dash">+ Add</button>
+          <button type="button" class="btn btn-sm btn-dash">
+            + Add
+          </button>
         </div>
       </div>
 

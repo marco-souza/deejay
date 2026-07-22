@@ -5,7 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build"
+    "build": "tsc && vite build",
+    "postinstall": "bunx lefthook install",
+    "format": "bunx biome format --write",
+    "lint": "bunx biome lint --write",
+    "check": "bunx biome check --write"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
@@ -13,8 +17,10 @@
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.5.5",
     "@types/webextension-polyfill": "^0.10.0",
     "daisyui": "^5.7.0",
+    "lefthook": "^2.1.10",
     "typescript": "^7.0.2",
     "vite": "^5.0.0",
     "vite-plugin-solid": "^2.11.13",
