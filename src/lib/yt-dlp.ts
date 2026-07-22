@@ -13,7 +13,7 @@ export function generateYtDlpCommand(playlist: Playlist): string {
     return "# No valid song URLs in this playlist.";
   }
 
-  return `yt-dlp -x --audio-format mp3 --ignore-errors --no-playlist -o "${folderName}/%(title)s.%(ext)s" ${urls}`;
+  return `yt-dlp --cookies-from-browser brave -x --audio-format mp3 --ignore-errors --no-playlist -o "${folderName}/%(title)s.%(ext)s" ${urls}`;
 }
 
 export async function copyYtDlpCommand(playlist: Playlist): Promise<boolean> {
