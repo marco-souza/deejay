@@ -1,10 +1,20 @@
 import { A, useParams } from "@solidjs/router";
-import { For, Show } from "solid-js";
+import { createSignal, For, Show } from "solid-js";
+import { copyYtDlpCommand } from "../lib/yt-dlp";
 import { getPlaylistById } from "../stores/playlists";
 
 export default function PlaylistDetail() {
   const params = useParams();
   const playlist = () => getPlaylistById(params.id ?? "");
+  const [copyStatus, setCopyStatus] = createSignal("");
+
+  const handleCopyCommand = async () => {
+    const p = playlist();
+    if (!p) return;
+    const ok = await copyYtDlpCommand(p);
+    setCopyStatus(ok ? "Command copied!" : "Failed to copy.");
+    setTimeout(() => setCopyStatus(""), 2000);
+  };
 
   return (
     <Show
@@ -19,13 +29,28 @@ export default function PlaylistDetail() {
               <p class="text-sm opacity-70">{p().description}</p>
             </div>
 
-            <A
-              href={`/playlists/${p().id}/edit`}
-              class="btn btn-primary btn-xs"
-            >
-              Edit
-            </A>
+            <div class="flex gap-2">
+              <button
+                type="button"
+                onClick={handleCopyCommand}
+                disabled={p().songs.length === 0}
+                class="btn btn-secondary btn-xs"
+                title="Copy yt-dlp command to download all songs as MP3"
+              >
+                yt-dlp
+              </button>
+              <A
+                href={`/playlists/${p().id}/edit`}
+                class="btn btn-primary btn-xs"
+              >
+                Edit
+              </A>
+            </div>
           </div>
+
+          <Show when={copyStatus()}>
+            <div class="alert alert-success py-2 text-sm">{copyStatus()}</div>
+          </Show>
 
           <div class="rounded-sm py-2" style={`background: ${p().color};`} />
 
