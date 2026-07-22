@@ -8,7 +8,9 @@ const SONGS_LOCAL_KEY = "playlistSongs";
 let saveQueue: Promise<void> = Promise.resolve();
 
 const songSchema = z.object({
+  id: z.string(),
   title: z.string(),
+  description: z.string(),
   link: z.string(),
   cover: z.string(),
 });

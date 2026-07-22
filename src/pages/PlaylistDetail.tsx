@@ -53,7 +53,14 @@ export default function PlaylistDetail() {
                     alt={song.title}
                     class="w-12 h-12 rounded-md object-cover"
                   />
-                  <span class="font-medium">{song.title}</span>
+                  <div class="flex flex-col min-w-0">
+                    <span class="font-medium truncate">{song.title}</span>
+                    <Show when={song.description}>
+                      <span class="text-sm opacity-70 truncate">
+                        {song.description}
+                      </span>
+                    </Show>
+                  </div>
                 </a>
               )}
             </For>

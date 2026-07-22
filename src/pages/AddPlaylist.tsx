@@ -1,4 +1,4 @@
-import { useNavigate } from "@solidjs/router";
+import { useLocation, useNavigate } from "@solidjs/router";
 import { createStore } from "solid-js/store";
 import { z } from "zod";
 import { addPlaylist } from "../stores/playlists";
@@ -16,9 +16,12 @@ type FormErrors = {
 
 export default function AddPlaylist() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const returnTo = () =>
+    (location.state as { returnTo?: string } | undefined)?.returnTo ?? "/";
   const [errors, setErrors] = createStore<FormErrors>({});
 
-  const handleSubmit = (e: SubmitEvent) => {
+  const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
     const form = e.currentTarget as HTMLFormElement;
     const data = new FormData(form);
@@ -34,10 +37,14 @@ export default function AddPlaylist() {
     }
 
     setErrors({});
-    addPlaylist(result.data);
-
+    const playlist = await addPlaylist(result.data);
     form.reset();
-    navigate("/");
+
+    if (returnTo() === "/add-song") {
+      navigate("/add-song", { state: { selectedPlaylistId: playlist.id } });
+    } else {
+      navigate(returnTo());
+    }
   };
 
   return (

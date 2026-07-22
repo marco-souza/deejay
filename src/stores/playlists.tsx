@@ -2,7 +2,9 @@ import { createStore } from "solid-js/store";
 import * as storage from "../lib/storage";
 
 export type Song = {
+  id: string;
   title: string;
+  description: string;
   link: string;
   cover: string;
 };
@@ -21,24 +23,6 @@ type PlaylistsState = {
 
 const initialPlaylists: Playlist[] = [];
 
-const mockSongs: Song[] = [
-  {
-    title: "Midnight City",
-    link: "https://example.com/midnight-city",
-    cover: "https://placehold.co/150x150/6366f1/ffffff?text=Midnight",
-  },
-  {
-    title: "Dreams",
-    link: "https://example.com/dreams",
-    cover: "https://placehold.co/150x150/10b981/ffffff?text=Dreams",
-  },
-  {
-    title: "Golden Hour",
-    link: "https://example.com/golden-hour",
-    cover: "https://placehold.co/150x150/f59e0b/ffffff?text=Golden",
-  },
-];
-
 export const [playlistsStore, setPlaylistsStore] = createStore<PlaylistsState>({
   playlists: initialPlaylists,
 });
@@ -48,15 +32,18 @@ export async function loadPlaylists() {
   setPlaylistsStore("playlists", playlists);
 }
 
-export async function addPlaylist(playlist: Omit<Playlist, "id" | "songs">) {
+export async function addPlaylist(
+  playlist: Omit<Playlist, "id" | "songs">,
+): Promise<Playlist> {
   const newPlaylist: Playlist = {
     ...playlist,
     id: crypto.randomUUID(),
-    songs: mockSongs,
+    songs: [],
   };
   const next = [...playlistsStore.playlists, newPlaylist];
   setPlaylistsStore("playlists", next);
   await storage.savePlaylists(next);
+  return newPlaylist;
 }
 
 export async function updatePlaylist(
@@ -73,6 +60,22 @@ export async function updatePlaylist(
 export async function removePlaylist(id: string) {
   const next = playlistsStore.playlists.filter(
     (playlist) => playlist.id !== id,
+  );
+  setPlaylistsStore("playlists", next);
+  await storage.savePlaylists(next);
+}
+
+export async function addSongToPlaylist(
+  playlistId: string,
+  song: Omit<Song, "id">,
+) {
+  const next = playlistsStore.playlists.map((playlist) =>
+    playlist.id === playlistId
+      ? {
+          ...playlist,
+          songs: [...playlist.songs, { ...song, id: crypto.randomUUID() }],
+        }
+      : playlist,
   );
   setPlaylistsStore("playlists", next);
   await storage.savePlaylists(next);
