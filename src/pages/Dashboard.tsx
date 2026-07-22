@@ -21,7 +21,10 @@ export default function Dashboard() {
               href={`/playlists/${p.id}`}
               class="card bg-base-300 w-full shadow-sm rounded-md hover:shadow-md transition-shadow"
             >
-              <div class="rounded-lg py-4" style={`background: ${p.color};`} />
+              <div
+                class="rounded-t-lg py-4"
+                style={`background: ${p.color};`}
+              />
 
               <div class="card-body">
                 <h3 class="card-title">{p.name}</h3>

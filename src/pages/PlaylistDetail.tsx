@@ -18,18 +18,28 @@ export default function PlaylistDetail() {
               <h2 class="text-xl font-bold">{p().name}</h2>
               <p class="text-sm opacity-70">{p().description}</p>
             </div>
+
             <A
               href={`/playlists/${p().id}/edit`}
-              class="badge badge-primary badge-lg"
+              class="btn btn-primary btn-xs"
             >
               Edit
             </A>
           </div>
 
-          <div class="rounded-lg py-6" style={`background: ${p().color};`} />
+          <div class="rounded-sm py-2" style={`background: ${p().color};`} />
 
           <div class="flex flex-col gap-3">
-            <h3 class="text-lg font-semibold">Songs</h3>
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-semibold">Songs</h3>
+              <button
+                type="button"
+                onClick={() => alert("Adding songs is not implemented yet.")}
+                class="btn btn-sm btn-primary"
+              >
+                + Add
+              </button>
+            </div>
             <For each={p().songs}>
               {(song) => (
                 <a

@@ -2,7 +2,11 @@ import { useNavigate, useParams } from "@solidjs/router";
 import { Show } from "solid-js";
 import { createStore } from "solid-js/store";
 import { z } from "zod";
-import { getPlaylistById, updatePlaylist } from "../stores/playlists";
+import {
+  getPlaylistById,
+  removePlaylist,
+  updatePlaylist,
+} from "../stores/playlists";
 
 const playlistSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -40,6 +44,13 @@ export default function EditPlaylist() {
     const id = params.id ?? "";
     updatePlaylist(id, result.data);
     navigate(`/playlists/${id}`);
+  };
+
+  const handleDelete = () => {
+    const id = params.id ?? "";
+    if (!confirm("Are you sure you want to delete this playlist?")) return;
+    removePlaylist(id);
+    navigate("/");
   };
 
   return (
@@ -88,9 +99,18 @@ export default function EditPlaylist() {
             />
           </label>
 
-          <button type="submit" class="btn btn-primary">
-            Save
-          </button>
+          <div class="flex gap-2">
+            <button type="submit" class="btn btn-primary flex-1">
+              Save
+            </button>
+            <button
+              type="button"
+              onClick={handleDelete}
+              class="btn btn-error btn-outline"
+            >
+              Delete
+            </button>
+          </div>
         </form>
       )}
     </Show>
