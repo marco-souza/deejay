@@ -5,6 +5,7 @@ import AddPlaylist from "./pages/AddPlaylist";
 import Dashboard from "./pages/Dashboard";
 import EditPlaylist from "./pages/EditPlaylist";
 import PlaylistDetail from "./pages/PlaylistDetail";
+import { loadPlaylists } from "./stores/playlists";
 
 render(
   () => (
@@ -17,3 +18,5 @@ render(
   ),
   document.body,
 );
+
+loadPlaylists();

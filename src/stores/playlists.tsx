@@ -1,4 +1,5 @@
 import { createStore } from "solid-js/store";
+import * as storage from "../lib/storage";
 
 export type Song = {
   title: string;
@@ -42,30 +43,39 @@ export const [playlistsStore, setPlaylistsStore] = createStore<PlaylistsState>({
   playlists: initialPlaylists,
 });
 
-export function addPlaylist(playlist: Omit<Playlist, "id" | "songs">) {
+export async function loadPlaylists() {
+  const playlists = await storage.loadPlaylists();
+  setPlaylistsStore("playlists", playlists);
+}
+
+export async function addPlaylist(playlist: Omit<Playlist, "id" | "songs">) {
   const newPlaylist: Playlist = {
     ...playlist,
     id: crypto.randomUUID(),
     songs: mockSongs,
   };
-  setPlaylistsStore("playlists", (prev) => [...prev, newPlaylist]);
+  const next = [...playlistsStore.playlists, newPlaylist];
+  setPlaylistsStore("playlists", next);
+  await storage.savePlaylists(next);
 }
 
-export function updatePlaylist(
+export async function updatePlaylist(
   id: string,
   updates: Omit<Playlist, "id" | "songs">,
 ) {
-  setPlaylistsStore("playlists", (prev) =>
-    prev.map((playlist) =>
-      playlist.id === id ? { ...playlist, ...updates } : playlist,
-    ),
+  const next = playlistsStore.playlists.map((playlist) =>
+    playlist.id === id ? { ...playlist, ...updates } : playlist,
   );
+  setPlaylistsStore("playlists", next);
+  await storage.savePlaylists(next);
 }
 
-export function removePlaylist(id: string) {
-  setPlaylistsStore("playlists", (prev) =>
-    prev.filter((playlist) => playlist.id !== id),
+export async function removePlaylist(id: string) {
+  const next = playlistsStore.playlists.filter(
+    (playlist) => playlist.id !== id,
   );
+  setPlaylistsStore("playlists", next);
+  await storage.savePlaylists(next);
 }
 
 export function getPlaylistById(id: string): Playlist | undefined {
